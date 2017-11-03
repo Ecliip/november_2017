@@ -1,0 +1,122 @@
+
+
+
+
+class List
+attr_reader :list_name
+	def initialize(list_name)
+		@list_name = list_name
+	end
+
+	def multi_choice
+		puts "\n \n \nChoose what would you like to do:\n \n \n"
+		puts "Create a list."
+		puts "Add to the list."
+		puts "Show all tasks."
+		puts "Read a task from the file."
+		puts "Delete a task."
+		puts "Update a task"
+		puts "Write to a file"
+
+	end
+
+	def add_task
+		puts "\n \n \nIntroduce your task \n \n \n" 
+		
+		@str = gets.chomp
+		$task.push @str
+
+	end
+
+def show_list
+#$task.each_with_index {|val, index| puts "#{val} => #{index}" }
+
+$task.map.with_index { |l, i| puts"(#{i.next}): #{l}"}
+=begin
+	puts "\n \n \n" 
+	puts $task 
+
+=end
+end
+
+def delete_task(task_number)
+	puts "please introduce the # of task you want eliminate"
+	task_number = gets.to_i
+	$task.delete_at(task_number - 1)
+	end
+
+def update_task
+	end
+
+def to_s
+	description
+end
+
+def write_to_file(filename)
+ 	IO.write(filename, $task.map(&:to_s).join("\n"))
+end	
+
+def read_file(filename)
+      IO.readlines(filename).each do |line|
+        add(List.new(line.chomp))
+    end
+end
+
+    def prompt(message = "Just the facts, ma'am.", symbol = ':> ')
+      print message
+      print symbol
+      gets.chomp
+    end
+
+def finalization
+	puts "the programm is finished"
+end
+
+end
+
+
+
+
+
+show = List.new("First list")
+$task = Array.new
+puts "Wellcome to your to do list"
+choice = "go"
+while choice != "leave" do
+
+show.multi_choice
+choice = gets.chomp
+
+
+case choice
+when "create" then show.add_task
+when "add" then show.add_task
+when "show" then show.show_list
+when "delete" then show.delete_task(0)
+when "update" then show.update_task
+when "write" then show.write_to_file(show.prompt)
+when "read" then show.read_file(show.prompt)
+else  show.finalization
+end
+end
+
+
+
+
+=begin
+puts "Type, more, if you want to add more tasks"
+more_tasks = gets.chomp
+show.add_task if more_tasks == "more"
+=end
+
+
+
+
+
+ if __FILE__ == $PROGRAM_NAME
+          my_list = List.new("First list")
+          puts 'You have created a new list'
+        end
+
+
+     show.show_list
