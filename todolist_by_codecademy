@@ -4,8 +4,11 @@
 
 class List
 attr_reader :list_name
-	def initialize(list_name)
+attr_accessor :status
+	def initialize(list_name, status = false)
 		@list_name = list_name
+		@status = status
+
 	end
 
 	def multi_choice
@@ -17,6 +20,7 @@ attr_reader :list_name
 		puts "Delete a task."
 		puts "Update a task"
 		puts "Write to a file"
+		puts "Toggle status"
 
 	end
 
@@ -45,7 +49,10 @@ def delete_task(task_number)
 	$task.delete_at(task_number - 1)
 	end
 
-def update_task
+def update_task(task_number, task)
+	$task[task_number - 1] = task
+	
+
 	end
 
 def to_s
@@ -60,6 +67,27 @@ def read_file(filename)
       IO.readlines(filename).each do |line|
         add(List.new(line.chomp))
     end
+end
+
+def completed?
+	status
+end
+
+def represent_status
+	print status == true ? "[X]" : "[ ]"
+end 
+
+
+def to_machine
+	print "#{represent_status} : #{show_list}"
+end
+
+def toggle_status
+	@completed_status = !completed?
+end
+
+def toggle(task_number)
+	$task[task_number - 1].toggle_status
 end
 
     def prompt(message = "Just the facts, ma'am.", symbol = ':> ')
@@ -91,11 +119,12 @@ choice = gets.chomp
 case choice
 when "create" then show.add_task
 when "add" then show.add_task
-when "show" then show.show_list
+when "show" then show.to_machine #show.show_list
 when "delete" then show.delete_task(0)
-when "update" then show.update_task
+when "update" then show.update_task(task_number = gets.to_i, task = gets.chomp)
 when "write" then show.write_to_file(show.prompt)
 when "read" then show.read_file(show.prompt)
+when "toggle" then show.toggle(task_number = gets.to_i)
 else  show.finalization
 end
 end
